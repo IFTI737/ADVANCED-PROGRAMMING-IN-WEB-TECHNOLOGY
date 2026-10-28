@@ -6,7 +6,7 @@ NestJS + TypeORM + PostgreSQL CRUD API for a small shop's products.
 
 | SL | Name | ID | Section |
 |----|------|----|---------|
-| [SL] | Iftekhar Bin Shoib | [Student ID] | [Section] |
+| 1 | Iftekhar Bin Shoib | 23-52337-2 | B |
 
 ## Tech used
 
@@ -14,35 +14,45 @@ NestJS + TypeORM + PostgreSQL CRUD API for a small shop's products.
 - TypeORM with PostgreSQL
 - Structure: Module, Controller, Service, Entity, DTO, Migration
 
-## Setup
+## How I built and connected the project
 
-### 1. Database (PostgreSQL)
+### 1. Set up the database (PostgreSQL)
 
-1. Install PostgreSQL and open pgAdmin 4.
-2. Create a database named `product_db`.
-3. In the Query Tool of `product_db`, run:
+1. I installed PostgreSQL and opened pgAdmin 4 to manage it.
+2. I created a new database named `product_db`.
+3. In the Query Tool of `product_db`, I ran this command so the database can generate UUID ids:
    ```sql
    CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
    ```
 
-### 2. Environment file
+### 2. Started from the course boilerplate
 
-Copy `.env.example` to `.env` and put your own PostgreSQL password in `DB_PASSWORD`:
+I used the NestJS boilerplate given by our instructor and followed his style: a Module, Controller, Service, Entity, DTO and Migration for the `product` feature. I added `ProductModule` to `app.module.ts`.
+
+### 3. Connected the project to the database
+
+1. I copied `.env.example` to `.env` and put my own PostgreSQL password in `DB_PASSWORD`. The database name is `product_db` and the server port is `5001`.
+   ```bash
+   copy .env.example .env      # Windows
+   # cp .env.example .env      # Mac / Linux
+   ```
+2. In `src/config/database.config.ts`, I listed the `Product` entity and the product migration directly. Without this, TypeORM could not find them because my folder name contains `[B]`. When a new module is added, its entity and migration must be listed here too.
+
+### 4. Installed and ran the project
 
 ```bash
-copy .env.example .env      # Windows
-# cp .env.example .env      # Mac / Linux
-```
-
-### 3. Install and run
-
-```bash
-pnpm install
-pnpm run migration:run      # creates the products table
-pnpm run start:dev          # starts the server on http://localhost:5001
+pnpm install                # installed the packages
+pnpm run migration:run      # created the products table in product_db
+pnpm run start:dev          # started the server on http://localhost:5001
 ```
 
 (If `pnpm` is not installed: `npm install -g pnpm`.)
+
+I checked in pgAdmin that the `products` table was created.
+
+### 5. Tested the API with Postman
+
+I tested every endpoint in Postman (method, full URL, status code and response body are visible in each screenshot). For POST and PATCH I used Body, then raw, then JSON. I created two products and used the real ids returned by the server for the GET by id, PATCH and DELETE requests.
 
 ## Product fields
 
