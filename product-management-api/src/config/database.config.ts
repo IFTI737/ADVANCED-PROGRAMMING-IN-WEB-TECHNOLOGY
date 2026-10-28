@@ -4,6 +4,8 @@ import {
   DataSourceOptions,
 } from "typeorm";
 import { camelCase, snakeCase } from "typeorm/util/StringUtils";
+import { Product } from "@/modules/product/entities/product.entity";
+import { CreateProductTable1793000000000 } from "@/database/migrations/1793000000000-create-product-table";
 import * as dotenv from "dotenv";
 dotenv.config();
 
@@ -83,9 +85,12 @@ export const dataSourceOptions: DataSourceOptions = {
   password: process.env.DB_PASSWORD,
   database: process.env.DB_DATABASE,
   schema: "public",
-  entities: [__dirname + "/../modules/**/entities/*.entity.{ts,js}"],
+  // Listed explicitly (instead of a file-search pattern) so it works on every
+  // computer, even when the folder path has characters like [ ] or backslashes.
+  // When you add a new module, add its entity and migration here too.
+  entities: [Product],
   namingStrategy: new SnakeNamingStrategy(),
-  migrations: [__dirname + "/../database/migrations/*.ts"],
+  migrations: [CreateProductTable1793000000000],
   logging: process.env.NODE_DB_ENV
     ? process.env.NODE_DB_ENV == "development"
       ? false
